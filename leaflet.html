@@ -1,0 +1,199 @@
+<html>
+<head>
+    <title>Florbalové haly</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+     crossorigin=""></script>
+
+</head>
+<body>
+    <div id="map">
+        <div class="komp" id="nazev">Florbalové haly od superligy po národní ligu</div>
+
+        <div class="komp" id="legend">
+            <div class="point" id="point1"></div>Livesport Superliga<br>
+            <div class="point" id="point2"></div>1. liga<br>
+            <div class="point" id="point3"></div>Národní liga západ<br>
+            <div class="point" id="point4"></div>Národní liga východ<br>
+            </div>
+
+            <div class="komp" id="tiraz">autor: David Šklíba</div>
+
+    </div>
+
+        <!-- link geoJSON data -->
+        <script src="cfbu_haly.js" type="text/javascript"></script>
+
+        <!-- script -->
+        <script type="text/javascript">
+
+function leagueColor(l) {
+    return l == "superliga" ? '#3cb44b':
+        l == "1. liga" ? '#4363d8':
+        l == "národní liga západ" ? '#f032e6':
+        l == "národní liga východ" ? '#f58231': '#f58231';
+}
+
+function onEachFeature(feature, layer) {
+       let popupContent =
+       `<p><b>${feature.properties.nazev}</b><br>` +
+       `<a href=${feature.properties.odkaz} target=_blank>ČFBÚ profil</a><br></p>`;
+
+        if (feature.properties && feature.properties.nazev) {
+        popupContent;
+        }
+
+        layer.bindPopup(popupContent);
+
+        layer.on('mouseover', function (e) {
+            this.setStyle({
+                color: 'red',
+                opacity: 0.2
+            });
+        });
+
+        layer.on('mouseout', function(e){
+            this.setStyle({
+                color: leagueColor(feature.properties.liga)
+            })
+        })
+        };
+
+function leagueFilter1 (layer) {
+    if (layer.properties.liga === 'superliga') return true;
+};
+
+function leagueFilter2 (layer) {
+    if (layer.properties.liga === '1. liga') return true;
+};
+
+function leagueFilter3 (layer) {
+    if (layer.properties.liga === 'národní liga západ') return true;
+};
+
+function leagueFilter4 (layer) {
+    if (layer.properties.liga === 'národní liga východ') return true;
+};
+
+var map = L.map('map').setView([49.74, 15.4], 7);
+var OSmap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+maxZoom: 19,
+attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+// add point
+
+var superliga = L.geoJSON(cfbu_haly, {
+
+    style: function (feature) {
+        return {
+            color: leagueColor(feature.properties.liga)};
+            },
+
+    onEachFeature,
+    
+    filter: leagueFilter1,
+
+    pointToLayer : function(feature, latlng) {
+                return L.circleMarker(latlng, {
+            radius : 5,
+            fillcolor : leagueColor(feature.properties.liga),
+            weight : 2,
+            opacity : 1,
+            fillOpacity : 0.8
+                    });
+        }
+            }).addTo(map);
+
+var prvniLiga = L.geoJSON(cfbu_haly, {
+
+    style: function (feature) {
+        return {
+            color: leagueColor(feature.properties.liga)};
+            },
+
+    onEachFeature,
+
+    filter: leagueFilter2,
+
+    pointToLayer : function(feature, latlng) {
+                return L.circleMarker(latlng, {
+            radius : 5,
+            fillcolor : leagueColor(feature.properties.liga),
+            weight : 2,
+            opacity : 1,
+            fillOpacity : 0.8
+                    });
+        }
+            }).addTo(map);
+
+var NLzapad = L.geoJSON(cfbu_haly, {
+
+    style: function (feature) {
+        return {
+            color: leagueColor(feature.properties.liga)};
+            },
+
+    onEachFeature,
+
+    filter: leagueFilter3,
+
+    pointToLayer : function(feature, latlng) {
+                return L.circleMarker(latlng, {
+            radius : 5,
+            fillcolor : leagueColor(feature.properties.liga),
+            weight : 2,
+            opacity : 1,
+            fillOpacity : 0.8
+                    });
+        }
+            }).addTo(map);
+
+var NLvychod = L.geoJSON(cfbu_haly, {
+
+    style: function (feature) {
+        return {
+            color: leagueColor(feature.properties.liga)};
+            },
+
+    onEachFeature,
+
+    filter: leagueFilter4,
+
+    pointToLayer : function(feature, latlng) {
+                return L.circleMarker(latlng, {
+            radius : 5,
+            fillcolor : leagueColor(feature.properties.liga),
+            weight : 2,
+            opacity : 1,
+            fillOpacity : 0.8
+                    });
+        }
+            }).addTo(map);
+
+var basemap = {
+    "Open Street Map" : OSmap
+};
+
+var mapContent = {
+    'Livesport Superliga' : superliga,
+    '1. liga' : prvniLiga,
+    'Národní liga západ' : NLzapad,
+    'Národní liga východ' : NLvychod
+};
+
+L.control.layers(basemap, mapContent).addTo(map);
+L.control.scale({imperial: false, position: 'bottomright'}).addTo(map);
+</script>
+
+</body>
+</html>

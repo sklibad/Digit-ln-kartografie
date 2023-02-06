@@ -1,0 +1,57 @@
+#map {
+    /*margin: auto;*/
+    margin-top: 70px;
+    margin-left: 270px;
+    width: 950px; 
+    height: 580px;
+}
+
+.komp {
+    background-color: rgba(227, 233, 225, 0.997);
+    position: absolute;
+    padding: 3px;
+    z-index: 500;
+}
+
+#legend {
+    bottom: 55px;
+    right: 20px;
+}
+
+#tiraz {
+  left: 15px;
+  bottom: 15px;
+  font-size: 12px;
+}
+
+#nazev {
+    top: 20px;
+    right: 260px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.point {
+    width: 11px;
+    height: 11px;
+    float: left;
+    margin-right: 8px;
+    border-radius: 100%;
+    margin-top: 3px;
+}
+
+#point1 {
+    background-color: #3cb44b;
+}
+
+#point2 {
+    background-color: #4363d8;
+}
+
+#point3 {
+    background-color: #f032e6;
+}
+
+#point4 {
+    background-color: #f58231;
+}
