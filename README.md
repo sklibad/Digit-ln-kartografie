@@ -1,2 +1,2 @@
-# Digit-ln-kartografie
+# Digitální kartografie
 web application created using Leaflet
